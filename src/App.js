@@ -2,46 +2,47 @@ import { useState } from 'react';
 import Banner from './componentes/Banner/Banner';
 import Formulario from './componentes/Formulario/Formulario';
 import Time from './componentes/Time/Time';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
 
-  const times = [
+  const [times, setTimes] = useState([
     {
+      id: uuidv4(),
       nome: 'Programação',
-      corPrimaria: '#57c278',
-      corSecundaria: '#D9f7e9',
+      cor: '#D9f7e9',
     },
     {
+      id: uuidv4(),
       nome: 'Front-End',
-      corPrimaria: '#82cffa',
-      corSecundaria: '#e8f8ff',
+      cor: '#e8f8ff',
     },
     {
+      id: uuidv4(),
       nome: 'Data Science',
-      corPrimaria: '#a6d157',
-      corSecundaria: '#f0f8e2',
+      cor: '#f0f8e2',
     },
     {
+      id: uuidv4(),
       nome: 'DevOps',
-      corPrimaria: '#e06869',
-      corSecundaria: '#fde7e8',
+      cor: '#fde7e8',
     },
     {
+      id: uuidv4(),
       nome: 'UX e Design',
-      corPrimaria: '#db6ebf',
-      corSecundaria: '#fae9f5',
+      cor: '#fae9f5',
     },
     {
+      id: uuidv4(),
       nome: 'Mobile',
-      corPrimaria: '#ffba05',
-      corSecundaria: '#fff5d9',
+      cor: '#fff5d9',
     },
     {
+      id: uuidv4(),
       nome: 'Inova',
-      corPrimaria: '#ff8a29',
-      corSecundaria: '#ffeedf',
+      cor: '#ffeedf',
     },
-  ]
+  ]);
 
   const [colaboradores, setColaboradores] = useState([]);
   
@@ -49,16 +50,30 @@ function App() {
     setColaboradores([...colaboradores, colaborador])
   };
 
+  function deletarColaborador(){
+    console.log('Deletando colaborador')
+  }
+
+  function mudarCorDoTime(cor, id){
+    setTimes(times.map(time => {
+      if(time.id === id) {
+        time.cor = cor;
+      }
+      return time;
+    }));
+  }
+
   return (
     <div className="App">
       <Banner />
       <Formulario times={times.map(time => time.nome)} aoColaboradorCadastrado={colaborador => aoNovoColaboradorAdicionado(colaborador)}/>
       {times.map(time => <Time
+        mudarCor={mudarCorDoTime}
         key={time.nome}
-        nome={time.nome}
-        corPrimaria={time.corPrimaria}
-        corSecundaria={time.corSecundaria}
+        id={time.id}
+        cor={time.cor}
         colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
+        aoDeletar={deletarColaborador}
       />)}
 
     </div>
